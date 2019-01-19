@@ -58,7 +58,6 @@ $exhibitions = array
 //Article Data
 $articles = array
 (
-
     array("Nourine Hammad | Plus One Gallery", "http://www.plusonegallery.com/artists/191-nourine-hammad/overview/"),
     array("Nourine Hammad: Reality check | CairoScene", "http://www.cairoscene.com/ArtsAndCulture/Nourine-Hammad-Reality-Check?M=True"),
     array("An interview with Nourine Hammad | Plus One Gallery", "http://www.plusonegallery.com/blog/52/"),
@@ -73,7 +72,7 @@ $instagramPage = "https://www.instagram.com/nourinehammadart/";
 $enquiryText = "";
 
 
-////////////////////////////////////////////// KIKO ONLY //////////////////////////////////////////////
+////////////////////////////////////////////// OVERLAY DATA //////////////////////////////////////////////
 
 //Overlay Data
 $gallery_image_to_overlay_size = [

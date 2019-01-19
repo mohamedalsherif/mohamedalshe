@@ -5,7 +5,7 @@
 
 
         <?php
-        include 'php/galleryImages.php';
+        include 'php/artworkImages.php';
         $imagesCount = getImagesCount();
 
         for ($i = 0; $i < $imagesCount; $i++) {
