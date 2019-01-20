@@ -59,6 +59,7 @@ function oneSecondFunction() {
 
 function resizeNav() {
     var maxMargin = 47;//max margin
+
     /*
     Get Left MArgin between two nav tabs and after the third one if its there
     */
@@ -82,16 +83,19 @@ function resizeNav() {
         return totalWidth;
     }
 
-    function getWidthOfAllNavElements() {
-        var arrayOfIds = $.map($("nav_tab_li"), function (n, i) {
+    function getWidthOfFirstNNavElements(n) {
+        var arrayOfIds = $.map($(".nav_tab_li"), function (n, i) {
             return n.id;
         });
-        totalWidth = getTotalWidthOfIds(arrayOfIds)
+        arrayOfIds=arrayOfIds.sort();
+        arrayOfIds=arrayOfIds.slice(0, n);
+        return getTotalWidthOfIds(arrayOfIds)
     }
 
     function putAllIdsInMiddle() {
+
         var totalWidth, contactLeftMargin = 0, articleLeftMargin = 0;
-        totalWidth = getTotalWidthOfIds(["theNav0", "theNav1", "theNav2", "theNav3", "theNav4"]);
+        totalWidth = getWidthOfFirstNNavElements(5);
         var viewportWidth = $(window).width();
         var leftMargin = ((viewportWidth - totalWidth) / 2);
         leftMargin = leftMargin > maxMargin ? leftMargin : maxMargin;
@@ -99,12 +103,10 @@ function resizeNav() {
 
         var fourthNav = $("#theNav4");
         var thirdNav = $("#theNav3");
-        var p = fourthNav.position();
         if (rightMargin < maxMargin) {
-            var widthOfFour = getTotalWidthOfIds(["theNav0", "theNav1", "theNav2", "theNav3"]) + 2 * maxMargin;
+            var widthOfFour = getWidthOfFirstNNavElements(4) + 2 * maxMargin;
             if (widthOfFour >= viewportWidth) {
-                totalWidth = getTotalWidthOfIds(["theNav0", "theNav1", "theNav2"]);
-                leftMargin = ((viewportWidth - totalWidth) / 2);
+                totalWidth = getWidthOfFirstNNavElements(3);
 
                 articleLeftMargin = -getTotalWidthOfIds("theNav3") / 2 + (getTotalWidthOfIds("theNav0") + getTotalWidthOfIds("theNav1")) / 2;
                 contactLeftMargin = 0;
@@ -117,16 +119,13 @@ function resizeNav() {
                 //contact only down
                 //put all again in middle
                 //put contact between artwork and exhibtion
-                totalWidth = getTotalWidthOfIds(["theNav0", "theNav1", "theNav2", "theNav3"]);
-                leftMargin = ((viewportWidth - totalWidth) / 2);
-                //$("nav").css('margin-left',leftMargin+'px');
+                totalWidth = getWidthOfFirstNNavElements(4);
+
 
                 contactLeftMargin = -getTotalWidthOfIds("theNav4") / 2 + getTotalWidthOfIds("theNav0") + (getTotalWidthOfIds("theNav1") + getTotalWidthOfIds("theNav2")) / 2;
-                //var outerWidth=fourthNav.outerWidth();
-                //var ml=(viewportWidth/2)-(outerWidth/2)-outerWidth;
-
 
             }
+            leftMargin = ((viewportWidth - totalWidth) / 2);
         }
 
         fourthNav.css('margin-left', contactLeftMargin + 'px');
