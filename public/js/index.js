@@ -31,7 +31,6 @@ function exit_hover_function() {
 }
 
 
-
 function oneSecondFunction() {
     $("#nav").css('visibility', 'visible').hide().fadeIn(500).delay(0).queue(function (next) {
         $("#divOfName").css('visibility', 'visible').hide().fadeIn(1000).delay(0).queue(function (next) {
@@ -43,9 +42,6 @@ function oneSecondFunction() {
         }).removeClass('visib_hidden');
 
     }).fadeIn(2000).removeClass('visib_hidden');
-    ;
-
-
 }
 
 
@@ -65,85 +61,82 @@ function resizeNav() {
         return totalWidth;
     }
 
-    function getSortedArrayOfNavIds()
-    {
+    function getSortedArrayOfNavIds() {
         var arrayOfIds = $.map($(".nav_tab_li"), function (n, i) {
             return n.id;
         });
         return arrayOfIds.sort();
     }
 
-    function getWidthOfFirstNNavElements(n=null) {
-        
-        arrayOfIds=getSortedArrayOfNavIds()
-        if(n!=null)arrayOfIds=arrayOfIds.slice(0, n);
+    function getWidthOfFirstNNavElements(n = null) {
+
+        arrayOfIds = getSortedArrayOfNavIds()
+        if (n != null) arrayOfIds = arrayOfIds.slice(0, n);
         return getTotalWidthOfIds(arrayOfIds)
     }
 
-    function addMaxMarginRightLeft(x)
-    {
-        return x+2*maxMargin;
+    function addMaxMarginRightLeft(x) {
+        return x + 2 * maxMarginAllowed;
     }
 
-    function getMaxPossibleNavsInFirstRow()
-    {
+    function getNumberOfNavs() {
+        return getSortedArrayOfNavIds().length;
+    }
+
+    function getMaxPossibleNavsInFirstRow() {
+        minimumAllowedInFirstRow = 3;
         var viewportWidth = $(window).width();
-        var currentWidth=addMaxMarginRightLeft(getWidthOfFirstNNavElements())
-        numberOfElements=getSortedArrayOfNavIds().length;
-        while(currentWidth>viewportWidth)
-        {
+        var currentWidth = addMaxMarginRightLeft(getWidthOfFirstNNavElements())
+        var numberOfElements = getNumberOfNavs();
+        while (currentWidth > viewportWidth) {
             numberOfElements--;
-            currentWidth=addMaxMarginRightLeft(getWidthOfFirstNNavElements(numberOfElements))
+            currentWidth = addMaxMarginRightLeft(getWidthOfFirstNNavElements(numberOfElements))
         }
-        return numberOfElements
+        return numberOfElements > minimumAllowedInFirstRow ? numberOfElements : minimumAllowedInFirstRow;
+    }
+
+    function getNumberOfNavElementsToByPassWhenComputingTheMargin(x, y) {
+        if ((x / 2) >= y) {
+            return Math.floor((x + 1) / 2) - y;
+        } else {
+            return Math.ceil((x + 1) / 2) - y;
+        }
+    }
+
+    function getBetweenTwoNavsPosition(startingElementForByPass, navElementsToByPass) {
+        var firstElement = startingElementForByPass + navElementsToByPass
+        return (getTotalWidthOfIds("theNav" + firstElement) + getTotalWidthOfIds("theNav" + ++firstElement)) / 2;
+    }
+
+    function getLeftMargin(startingElementForByPass, x, y, elementsToBeChanged) {
+        navElementsToByPass = getNumberOfNavElementsToByPassWhenComputingTheMargin(x, y)
+        var skippedPart = getTotalWidthOfIds("theNav" + (navElementsToByPass - 1));
+        var betweenTwoNavs = getBetweenTwoNavsPosition(startingElementForByPass, navElementsToByPass);
+        var widthOfElementWithNewMarginLeft = getTotalWidthOfIds("theNav" + elementsToBeChanged) / 2;
+        var sum = skippedPart + betweenTwoNavs - widthOfElementWithNewMarginLeft;
+        return sum
     }
 
     function putAllIdsInMiddle() {
-        ff=getMaxPossibleNavsInFirstRow();
-        var totalWidth, contactLeftMargin = 0, articleLeftMargin = 0;
-        totalWidth = getWidthOfFirstNNavElements(5);
+        var totalWidth = getWidthOfFirstNNavElements(5);
         var viewportWidth = $(window).width();
         var leftMargin = ((viewportWidth - totalWidth) / 2);
-        leftMargin = leftMargin > maxMargin ? leftMargin : maxMargin;
+        leftMargin = leftMargin > maxMarginAllowed ? leftMargin : maxMarginAllowed;
         var rightMargin = viewportWidth - totalWidth - leftMargin;
-
-        var fourthNav = $("#theNav4");
-        var thirdNav = $("#theNav3");
-        if (rightMargin < maxMargin) {
-            var widthOfFour = getWidthOfFirstNNavElements(4) + 2 * maxMargin;
-            if (widthOfFour >= viewportWidth) {
-                totalWidth = getWidthOfFirstNNavElements(3);
-
-                articleLeftMargin = -getTotalWidthOfIds("theNav3") / 2 + (getTotalWidthOfIds("theNav0") + getTotalWidthOfIds("theNav1")) / 2;
-                contactLeftMargin = 0;
-
-                //contact and articles down
-                //put all again in middle
-                //put contact between about and artwork
-                //put articles between artwork and exhibtion
-            } else {
-                //contact only down
-                //put all again in middle
-                //put contact between artwork and exhibtion
-                totalWidth = getWidthOfFirstNNavElements(4);
-
-
-                contactLeftMargin = -getTotalWidthOfIds("theNav4") / 2 + getTotalWidthOfIds("theNav0") + (getTotalWidthOfIds("theNav1") + getTotalWidthOfIds("theNav2")) / 2;
-
-            }
-            leftMargin = ((viewportWidth - totalWidth) / 2);
-        }
-
-        fourthNav.css('margin-left', contactLeftMargin + 'px');
-        thirdNav.css('margin-left', articleLeftMargin + 'px');
-
-        //leftMargin=leftMargin>mm?leftMargin:mm;
+        $(".nav_tab_li").css({marginLeft: "0px"});
+        var numberOfElements = getNumberOfNavs();
+        dd = getMaxPossibleNavsInFirstRow()
+        var totalPossibleWidth = getWidthOfFirstNNavElements(dd);
+        testMargin = getLeftMargin(0, dd, numberOfElements - dd, dd)
+        $("#theNav" + dd).css('margin-left', testMargin + 'px');
+        leftMargin = ((viewportWidth - totalPossibleWidth) / 2);
         $("#nav").css('margin-left', leftMargin + 'px');
     }
-    var maxMargin = 47;//max margin
+
+    var maxMarginAllowed = 47;//max margin
     putAllIdsInMiddle();
     return;
-   }
+}
 
 $(window).resize(function () {
     resizeNav();
