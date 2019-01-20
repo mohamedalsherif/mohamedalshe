@@ -17,6 +17,7 @@
     <?php include_once 'pages/exhibitions.php'; ?>
     <?php include_once 'pages/articles.php'; ?>
     <?php include_once 'pages/contact.php'; ?>
+    <?php include_once 'pages/prints.php'; ?>
 </div>
 
 

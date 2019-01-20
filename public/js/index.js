@@ -14,7 +14,7 @@ function enter_hover_function() {
     var ff = this.getBoundingClientRect().left;
     var theOverlay = $("#theOverlay")[0];
 
-    var newTopPosition = this.y - 192;//-(this.height/2);
+    var newTopPosition = this.y - 192;
     console.log("hiehgt: " + this.height + " width: " + this.width + " y: " + this.y + " x:" + this.x + " and new Top Position:" + newTopPosition);
     $("#theOverlay").css({
         height: this.height,
@@ -24,21 +24,13 @@ function enter_hover_function() {
         position: 'relative',
         opacity: 1
     });
-    //$("#theOverlay").css({height: this.height , width:this.width, top: fff.top, left: fff.left, position:'relative' ,opacity: 1});
 }
 
 function exit_hover_function() {
     $("#theOverlay").css({opacity: 0});
 }
 
-function aa() {
 
-}
-
-
-function bb() {
-
-}
 
 function oneSecondFunction() {
     $("#nav").css('visibility', 'visible').hide().fadeIn(500).delay(0).queue(function (next) {
@@ -58,16 +50,6 @@ function oneSecondFunction() {
 
 
 function resizeNav() {
-    var maxMargin = 47;//max margin
-
-    /*
-    Get Left MArgin between two nav tabs and after the third one if its there
-    */
-    function getLeftMargin(id1, id2, id3) {
-        var f = $("#" + id1);
-        var g = $("#" + id2);
-        var position = f.position();
-    }
 
     function getTotalWidthOfIds(ids) {
         //var ids=[];
@@ -83,17 +65,41 @@ function resizeNav() {
         return totalWidth;
     }
 
-    function getWidthOfFirstNNavElements(n) {
+    function getSortedArrayOfNavIds()
+    {
         var arrayOfIds = $.map($(".nav_tab_li"), function (n, i) {
             return n.id;
         });
-        arrayOfIds=arrayOfIds.sort();
-        arrayOfIds=arrayOfIds.slice(0, n);
+        return arrayOfIds.sort();
+    }
+
+    function getWidthOfFirstNNavElements(n=null) {
+        
+        arrayOfIds=getSortedArrayOfNavIds()
+        if(n!=null)arrayOfIds=arrayOfIds.slice(0, n);
         return getTotalWidthOfIds(arrayOfIds)
     }
 
-    function putAllIdsInMiddle() {
+    function addMaxMarginRightLeft(x)
+    {
+        return x+2*maxMargin;
+    }
 
+    function getMaxPossibleNavsInFirstRow()
+    {
+        var viewportWidth = $(window).width();
+        var currentWidth=addMaxMarginRightLeft(getWidthOfFirstNNavElements())
+        numberOfElements=getSortedArrayOfNavIds().length;
+        while(currentWidth>viewportWidth)
+        {
+            numberOfElements--;
+            currentWidth=addMaxMarginRightLeft(getWidthOfFirstNNavElements(numberOfElements))
+        }
+        return numberOfElements
+    }
+
+    function putAllIdsInMiddle() {
+        ff=getMaxPossibleNavsInFirstRow();
         var totalWidth, contactLeftMargin = 0, articleLeftMargin = 0;
         totalWidth = getWidthOfFirstNNavElements(5);
         var viewportWidth = $(window).width();
@@ -134,46 +140,10 @@ function resizeNav() {
         //leftMargin=leftMargin>mm?leftMargin:mm;
         $("#nav").css('margin-left', leftMargin + 'px');
     }
-
+    var maxMargin = 47;//max margin
     putAllIdsInMiddle();
     return;
-    var totalWidth = 0;
-    $('#nav .nav_tab_li').each(function () {
-        var $this = $(this);
-        var width = $this.outerWidth();
-        totalWidth += width;
-    });
-    var viewportWidth = $(window).width();
-    var leftMargin = ((viewportWidth - totalWidth) / 2);
-    leftMargin = leftMargin > maxMargin ? leftMargin : maxMargin;
-    var rightMargin = viewportWidth - totalWidth - leftMargin;
-    var fourthNav = $("#theNav4");
-    var thirdNav = $("#theNav3");
-    if (rightMargin < maxMargin) {
-        var widthOfThree = totalWidth - thirdNav.outerWidth() - fourthNav.outerWidth() - maxMargin - maxMargin;
-        if (widthOfThree >= viewportWidth) {
-            //contact only down
-            //put all again in middle
-            //put contact between artwork and exhibtion
-            var outerWidth = fourthNav.outerWidth();
-            var ml = (viewportWidth / 2) - (outerWidth / 2) - outerWidth;
-            fourthNav.css('margin-left', ml + 'px');
-        } else {
-            //contact and articles down
-            //put all again in middle
-            //put contact between about and artwork
-            //put articles between artwork and exhibtion
-        }
-
-    } else {
-        fourthNav.css('margin-left', '0px');
-        thirdNav.css('margin-left', '0px');
-        $("#nav").css('margin-left', leftMargin + 'px');
-    }
-
-    //var contactMargin=
-    console.log("leftMargin: " + leftMargin + " viewportWidth:" + viewportWidth + "totalWidth " + totalWidth + " final " + (viewportWidth - totalWidth - leftMargin));
-}
+   }
 
 $(window).resize(function () {
     resizeNav();
@@ -182,17 +152,6 @@ $(window).resize(function () {
 $(document).ready(function () {
 
     resizeNav();
-//  $("a").focus(function(){
-
-    //this.blur();
-    //this.parentElement.blur(); did not work
-//});
-    /* $.detectSwipe.threshold=50;
-        $  ("body").on('swipeleft',  function(){
-        slickSwipe("left");
-        })
-                .on('swiperight', function(){slickSwipe("right");})s */
-
     $('.galleryImage').hover(enter_hover_function, exit_hover_function);
     $("#fblikeDiv").removeAttr("data-href");
     console.log("ready!");
@@ -205,10 +164,6 @@ $(document).ready(function () {
         $(".hrefToRemoveInMobile").removeAttr("href");
         swipe = true;
     } else {
-        //initPhotoSwipeFromDOM('#demo-test-gallery');
-        //initPhotoSwipeFromDOM('.hrefToRemoveInMobile');
-        //initPhotoSwipeFromDOM('.galleryImageContainer');
-        //initPhotoSwipeFromDOM('#my-gallery');
         initPhotoSwipeFromDOM('.galleryImageContainer');
     }
 
@@ -336,14 +291,9 @@ function fixDisplay() {
 
 window.onresize = function () {
     fixDisplay();
-    //console.log(window.outerWidth);
 }
 
 function CSSPropertiesAddedOnTheFly() {
-// $(".galleryImageContainer").css("width","100%");
-//  $(".galleryImageContainer").css("height","100%");
-    //$(".galleryImage").css("max-width","100%");
-    //$(".galleryImage").css("height","100%");
 
     $(".exhibitionImage").css("width", "100%");
     $(".exhibitionImage").css("height", "100%");
