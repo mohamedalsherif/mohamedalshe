@@ -95,7 +95,8 @@ function resizeNav() {
         return numberOfElements > minimumAllowedInFirstRow ? numberOfElements : minimumAllowedInFirstRow;
     }
 
-    function getNumberOfNavElementsToByPassWhenComputingTheMargin(x, y) {
+    function getNumberOfNavElementsToByPassWhenComputingTheMargin(x, y) 
+    {
         if ((x / 2) >= y) {
             return Math.floor((x + 1) / 2) - y;
         } else {
@@ -103,21 +104,36 @@ function resizeNav() {
         }
     }
 
-    function getBetweenTwoNavsPosition(startingElementForByPass, navElementsToByPass) {
+    function getBetweenTwoNavsPosition(startingElementForByPass, navElementsToByPass) 
+    {
         var firstElement = startingElementForByPass + navElementsToByPass
         return (getTotalWidthOfIds("theNav" + firstElement) + getTotalWidthOfIds("theNav" + ++firstElement)) / 2;
     }
 
-    function getLeftMargin(startingElementForByPass, x, y, elementsToBeChanged) {
+    function getNavArrayUntilId(x)
+    {
+        var i=0;
+        result=[];
+        for(var i=0;i<=x;i++)
+        {
+            var str = "theNav" + i;
+            result.push(str);
+        }
+        return result;
+    }
+
+    function getLeftMargin(startingElementForByPass, x, y, elementsToBeChanged) 
+    {
         navElementsToByPass = getNumberOfNavElementsToByPassWhenComputingTheMargin(x, y)
-        var skippedPart = getTotalWidthOfIds("theNav" + (navElementsToByPass - 1));
+        var skippedPart = getTotalWidthOfIds(getNavArrayUntilId(navElementsToByPass - 1));
         var betweenTwoNavs = getBetweenTwoNavsPosition(startingElementForByPass, navElementsToByPass);
         var widthOfElementWithNewMarginLeft = getTotalWidthOfIds("theNav" + elementsToBeChanged) / 2;
         var sum = skippedPart + betweenTwoNavs - widthOfElementWithNewMarginLeft;
         return sum
     }
 
-    function putAllIdsInMiddle() {
+    function putAllIdsInMiddle() 
+    {
         var totalWidth = getWidthOfFirstNNavElements(5);
         var viewportWidth = $(window).width();
         var leftMargin = ((viewportWidth - totalWidth) / 2);

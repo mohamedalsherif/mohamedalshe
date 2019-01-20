@@ -1,10 +1,6 @@
 <?php
 
-function getGalleryRowCount1()
-{
-    //global $images,$maxImagesPerColumn;
-    return 5;//count($images)/$maxImagesPerColumn;
-}
+
 
 /////////////////////////// Articles Functions ///////////////////////////
 function getArticlesCount()
@@ -72,9 +68,20 @@ function givenExhibitionIndexGetImageDiv($index)
 }
 
 
-function getImagesCount()
+function getArtworkImages()
 {
-    global $images;
+    global $artworkImages;
+    return $artworkImages;
+}
+
+function getPrintsImages()
+{
+    global $printsImages;
+    return $printsImages;
+}
+
+function getImageCount($images)
+{
     return count($images);
 }
 
@@ -84,36 +91,36 @@ function getGalleryColumnCount()
     return $maxImagesPerColumn;
 }
 
-function givenImageIndexGetNextIndex($index)
+function givenImageIndexGetNextIndex($index,$images)
 {
-    $count = getImagesCount();
+    $count = getImageCount();
     $result = ($index + 1) % $count;
-    if (isIndexEmpty($result)) {
-        return givenImageIndexGetNextIndex($result);
+    if (isIndexEmpty($result,$images)) {
+        return givenImageIndexGetNextIndex($result,$images);
     } else {
         return $result;
     }
 }
 
-function givenImageIndexGetPreviousIndex($index)
+function givenImageIndexGetPreviousIndex($index,$images)
 {
-    $count = getImagesCount();
+    $count = getImageCount();
     if ($index == 0) {
         return $count - 1;
     } else {
         $result = $index - 1;
-        if (isIndexEmpty($result)) {
-            return givenImageIndexGetPreviousIndex($result);
+        if (isIndexEmpty($result,$images)) {
+            return givenImageIndexGetPreviousIndex($result,$images);
         } else {
             return $result;
         }
     }
 }
 
-function isIndexEmpty($index)
+function isIndexEmpty($index,$images)
 {
     global $imagesLocationSmall;
-    $imagePath = givenImageIndexGetSmallImagePath($index);
+    $imagePath = givenImageIndexGetSmallImagePath($index,$images);
     if ($imagePath == $imagesLocationSmall) {
         return true;
     } else {
@@ -122,32 +129,31 @@ function isIndexEmpty($index)
 }
 
 
-function givenImageIndexGetSmallImagePath($index)
+function givenImageIndexGetSmallImagePath($index,$images)
 {
-    global $images, $imagesLocationSmall;
+    global $imagesLocationSmall;
     return $imagesLocationSmall . $images[$index][0];
 }
 
-function givenImageIndexGetBigImagePath($index)
+function givenImageIndexGetBigImagePath($index,$images)
 {
-    global $images, $imagesLocationNormal;
+    global $imagesLocationNormal;
     return $imagesLocationNormal . $images[$index][0];
 }
 
 
-function givenImageIndexGetImageCaption($index)
+function givenImageIndexGetImageCaption($index,$images)
 {
-    global $images;
     return $images[$index][1];
 }
 
-function givenGalleryImageIndexGetImageDiv($index)
+function givenArtworkImageIndexGetImageDiv($index,$images)
 {
-    global $imagesLocationNormal, $images, $gallery_image_to_overlay_size;
+    global $imagesLocationNormal, $gallery_image_to_overlay_size;
 
-    $imagePathSmall = givenImageIndexGetSmallImagePath($index);
-    $imagePathBig = givenImageIndexGetBigImagePath($index);
-    $imageCaption = givenImageIndexGetImageCaption($index);
+    $imagePathSmall = givenImageIndexGetSmallImagePath($index,$images);
+    $imagePathBig = givenImageIndexGetBigImagePath($index,$images);
+    $imageCaption = givenImageIndexGetImageCaption($index,$images);
 
 
     $j = 0;
@@ -157,13 +163,8 @@ function givenGalleryImageIndexGetImageDiv($index)
     $imageFrame = $images[$index][$j++];
     $soldOptional = array_key_exists($j, $images[$index]) ? $images[$index][$j++] : "";
 
-    if (!isIndexEmpty($index)) {
-        /*  $randomBool = rand(0,1) == 1;
-        $classTest="";
-          if($randomBool)
-          {
-            $classTest="pImageName2";
-          }*/
+    if (!isIndexEmpty($index,$images)) {
+
         list($width, $height, $type, $attr) = getimagesize($imagePathBig);
 
 

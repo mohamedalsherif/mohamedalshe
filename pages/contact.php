@@ -18,14 +18,12 @@
             </center>
         </div>
         <br/>
-        <div class="nourineMail">
-            <center>
+        <div class="nourineMail" >
                 <a id="theMailCenterA" class="theAFloatNone" href="mailto:<?php
                 echo $contactPageText;
                 ?>" class="theCorrectFont mail"><?php
                     echo strtoupper($contactPageText);
                     ?></a>
-            </center>
         </div>
 
 

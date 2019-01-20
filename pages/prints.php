@@ -1,12 +1,11 @@
-<div id="Gallery" class="contentbox">
+<div id="Gallery11" class="contentbox">
 
 
-    <div id="my-gallery" class="demo-gallery" data-pswp-uid="2">
+    <div id="my-gallery11" class="demo-gallery" data-pswp-uid="2">
 
 
         <?php
-        include 'php/artworkImages.php';
-        $artworkImages =getArtworkImages();
+        $artworkImages =getPrintsImages();
         $imagesCount = getImageCount($artworkImages);
 
         for ($i = 0; $i < $imagesCount; $i++) {

@@ -10,7 +10,7 @@ $aboutMainImage = "public/img/normalSize/HomeImage.jpg";
 
 //Artworks Data
 $imagesLocationNormal = "public/img/normalSize/";
-$images = array
+$artworkImages = array
 (
     array("MoSalah_website1.jpg", "Mo Salah Jersey, 2018", "Pencil on paper", "Framed: 104 cm x 88 cm"),
     array("Batman.jpg", "Batman's Time, 2018", "Pencil on paper", "Framed: 67 cm x 116 cm "),
@@ -34,8 +34,13 @@ $images = array
     array("ItalianEuro.jpg", "Italian Euro (inspired by Marcello Barenghi), 2014", "Pastels on paper", "Framed: 30 cm x 30 cm", "SOLD"),
     array("CrushedCan.jpg", "Crushed Can (inspired by Marcello Barenghi), 2014", "Pastels on paper", "Framed: 40 cm x 33 cm"),
     array("LightBulb.jpg", "Light Bulb (inspired by Marcello Barenghi), 2014", "Pastels on paper", "Framed: 33 cm x 38  cm")
+);
 
-
+//Prints Data
+$printsImages = array
+(
+    array("MoSalah_website1.jpg", "Mo Salah Jersey, 2018", "Pencil on paper", "Framed: 104 cm x 88 cm"),
+    array("Batman.jpg", "Batman's Time, 2018", "Pencil on paper", "Framed: 67 cm x 116 cm "),
 );
 
 

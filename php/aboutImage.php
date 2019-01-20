@@ -4,14 +4,14 @@
 // so had to use same method but with differnet name..
 function givenImageIndexGetImageCaption1($index)
 {
-    global $images;
-    return $images[$index][1];
+    global $artworkImages;
+    return $artworkImages[$index][1];
 }
 
 function givenImageIndexGetBigImagePath1($index)
 {
-    global $images, $imagesLocationNormal;
-    return $imagesLocationNormal . $images[$index][0];
+    global $artworkImages, $imagesLocationNormal;
+    return $imagesLocationNormal . $artworkImages[$index][0];
 }
 
 function getHomeMainImage()
