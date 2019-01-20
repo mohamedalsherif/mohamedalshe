@@ -134,19 +134,30 @@ function resizeNav() {
 
     function putAllIdsInMiddle() 
     {
-        var totalWidth = getWidthOfFirstNNavElements(5);
-        var viewportWidth = $(window).width();
-        var leftMargin = ((viewportWidth - totalWidth) / 2);
-        leftMargin = leftMargin > maxMarginAllowed ? leftMargin : maxMarginAllowed;
-        var rightMargin = viewportWidth - totalWidth - leftMargin;
-        $(".nav_tab_li").css({marginLeft: "0px"});
         var numberOfElements = getNumberOfNavs();
+        var viewportWidth = $(window).width();
+
+        $(".nav_tab_li").css({marginLeft: "0px"});
+
         dd = getMaxPossibleNavsInFirstRow()
+        var magic=dd/numberOfElements*1.0>0.5?0:1;
+//         if(magic==0)
+//         {
+//             var totalPossibleWidth = getWidthOfFirstNNavElements(dd);
+//         }
+//         else
+//         {
+//              var totalPossibleWidth = getWidthOfFirstNNavElements(dd+3)- getWidthOfFirstNNavElements(dd);
+//         }
         var totalPossibleWidth = getWidthOfFirstNNavElements(dd);
-        testMargin = getLeftMargin(0, dd, numberOfElements - dd, dd)
-        $("#theNav" + dd).css('margin-left', testMargin + 'px');
+        testMargin = getLeftMargin(3*magic, dd, numberOfElements - dd, dd)
+        
+        var ff=dd +(magic*3)
+
+        $("#theNav" + ff).css('margin-left', testMargin + 'px');
         leftMargin = ((viewportWidth - totalPossibleWidth) / 2);
         $("#nav").css('margin-left', leftMargin + 'px');
+        console.log("magic"+ magic + "dd " + dd)
     }
 
     var maxMarginAllowed = 47;//max margin
